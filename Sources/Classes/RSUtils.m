@@ -12,6 +12,8 @@
 #import "RSDBMessage.h"
 #if TARGET_OS_WATCH
 #import <WatchKit/WKInterfaceDevice.h>
+#elif TARGET_OS_IOS || TARGET_OS_TV
+#import <UIKit/UIKit.h>
 #endif
 
 @implementation RSUtils
@@ -215,9 +217,9 @@
 
 + (NSString* _Nullable) getDeviceId {
     NSString * deviceId;
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
     deviceId = [[[[UIDevice currentDevice] identifierForVendor] UUIDString]lowercaseString];
-#else
+#elif TARGET_OS_WATCH
     deviceId = [[[[WKInterfaceDevice currentDevice] identifierForVendor]UUIDString] lowercaseString];
 #endif
     return deviceId;

@@ -8,7 +8,9 @@
 
 #import "RSDeviceInfo.h"
 #import "RSContext.h"
+#if TARGET_OS_IOS || TARGET_OS_TV
 #import <UIKit/UIKit.h>
+#endif
 #import "RSConstants.h"
 #if TARGET_OS_WATCH
 #import <WatchKit/WKInterfaceDevice.h>
@@ -20,12 +22,12 @@
 - (instancetype) initWithConfig: (RSConfig *) config {
     self = [super init];
     if (self) {
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
         _identifier = config.collectDeviceId ? [[[[UIDevice currentDevice] identifierForVendor] UUIDString]lowercaseString] : nil;
         _model = [[UIDevice currentDevice] model];
         _name = [[UIDevice currentDevice] name];
         _type = [[UIDevice currentDevice] systemName];
-#else
+#elif TARGET_OS_WATCH
         _identifier = config.collectDeviceId ? [[[[WKInterfaceDevice currentDevice] identifierForVendor]UUIDString] lowercaseString] : nil;
         _model = [[WKInterfaceDevice currentDevice]model];
         _name = [[WKInterfaceDevice currentDevice]name];

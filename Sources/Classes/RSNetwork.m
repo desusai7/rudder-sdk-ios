@@ -9,7 +9,7 @@
 #import "RSNetwork.h"
 #import "RSLogger.h"
 #import "RSUtils.h"
-#if !TARGET_OS_TV && !TARGET_OS_WATCH
+#if TARGET_OS_IOS
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 #endif
@@ -21,7 +21,7 @@
     self = [super init];
     if (self) {
         _carrier = [[NSMutableArray alloc] init];
-#if !TARGET_OS_TV && !TARGET_OS_WATCH
+#if TARGET_OS_IOS
         CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
         if(@available(iOS 16.0, *)) {
             [RSLogger logWarn:@"RSNetwork: init: cannot retrieve carrier names on iOS 16 and above as CTCarrier is deprecated"];
@@ -50,7 +50,7 @@
             [RSLogger logWarn:@"RSNetwork: init: unable to retrieve carrier name"];
         }
 #endif
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
         SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, "8.8.8.8");
         SCNetworkReachabilityFlags flags;
         SCNetworkReachabilityGetFlags(reachability, &flags);
@@ -87,7 +87,7 @@
         if(_carrier.count !=0) {
             [tempDict setValue:[RSUtils getCSVString:_carrier] forKey:@"carrier"];
         }
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
             [tempDict setValue:[NSNumber numberWithBool:_wifi] forKey:@"wifi"];
             [tempDict setValue:[NSNumber numberWithBool:_cellular] forKey:@"cellular"];
 #endif

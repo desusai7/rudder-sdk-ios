@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "RSConfig.h"
 #import "RSLogger.h"
+#if TARGET_OS_IOS || TARGET_OS_TV
+#import <UIKit/UIKit.h>
+#endif
 
 @interface RSBackGroundModeManager : NSObject {
     RSConfig* config;
     BOOL isSemaphoreReleased;
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
     UIBackgroundTaskIdentifier backgroundTask;
 #else
     dispatch_semaphore_t semaphore;

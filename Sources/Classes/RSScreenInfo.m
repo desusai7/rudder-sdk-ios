@@ -9,6 +9,8 @@
 #import "RSScreenInfo.h"
 #if TARGET_OS_WATCH
 #import <WatchKit/WKInterfaceDevice.h>
+#elif TARGET_OS_IOS || TARGET_OS_TV
+#import <UIKit/UIKit.h>
 #endif
 
 
@@ -18,11 +20,12 @@
 {
     self = [super init];
     if (self) {
-#if !TARGET_OS_WATCH
-        CGRect bounds = [[UIScreen mainScreen] bounds];
+        CGRect bounds;
+#if TARGET_OS_IOS || TARGET_OS_TV
+        bounds = [[UIScreen mainScreen] bounds];
         _density = [[UIScreen mainScreen] scale];
-#else
-        CGRect bounds = [[WKInterfaceDevice currentDevice] screenBounds];
+#elif TARGET_OS_WATCH
+        bounds = [[WKInterfaceDevice currentDevice] screenBounds];
         _density = [[WKInterfaceDevice currentDevice] screenScale];
 #endif
         _width = bounds.size.width;

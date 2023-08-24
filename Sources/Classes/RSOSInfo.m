@@ -9,6 +9,8 @@
 #import "RSOSInfo.h"
 #if TARGET_OS_WATCH
 #import <WatchKit/WKInterfaceDevice.h>
+#elif TARGET_OS_IOS || TARGET_OS_TV
+#import <UIKit/UIKit.h>
 #endif
 
 
@@ -18,11 +20,11 @@
 {
     self = [super init];
    if (self) {
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
         UIDevice *device = [UIDevice currentDevice];
         _name = [device systemName];
         _version = [device systemVersion];
-#else
+#elif TARGET_OS_WATCH
        _name = [[WKInterfaceDevice currentDevice]systemName];
        _version = [[WKInterfaceDevice currentDevice]systemVersion];
 #endif

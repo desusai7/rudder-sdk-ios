@@ -25,7 +25,7 @@
     return self;
 }
 
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
 - (void) trackApplicationLifeCycle {
     [RSLogger logVerbose:@"RSApplicationLifeCycleManager: trackApplicationLifeCycle: Registering for Application Life Cycle Notifications"];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -49,7 +49,7 @@
     }
 }
 
-#else
+#elif TARGET_OS_WATCH
 - (void) trackApplicationLifeCycle {
     [RSLogger logVerbose:@"RSApplicationLifeCycleManager: trackApplicationLifeCycle: Registering for Application Life Cycle Notifications"];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -134,7 +134,7 @@
     if (version != nil) {
         [applicationOpenedProperties setObject:version forKey:@"version"];
     }
-#if !TARGET_OS_WATCH
+#if TARGET_OS_IOS || TARGET_OS_TV
     NSString *referring_application = [[NSString alloc] initWithFormat:@"%@", launchOptions[UIApplicationLaunchOptionsSourceApplicationKey] ?: @""];
     if ([referring_application length]) {
         [applicationOpenedProperties setObject:referring_application forKey:@"referring_application"];
@@ -163,7 +163,7 @@
 - (void) prepareScreenRecorder {
 #if TARGET_OS_WATCH
     [WKInterfaceController rudder_swizzleView];
-#else
+#elif TARGET_OS_IOS || TARGET_OS_TV
     [UIViewController rudder_swizzleView];
 #endif
 }
